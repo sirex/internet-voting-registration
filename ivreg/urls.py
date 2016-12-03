@@ -14,7 +14,6 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
 
 from ivreg import views
 
@@ -23,5 +22,4 @@ urlpatterns = [
     url(r'^registration/$', views.registration, name='registration'),
     url(r'^validate/$', views.validate, name='validate'),
     url(r'^ballot/(?P<ballot_id>[0-9a-zA-Z]+)/$', views.ballot, name='ballot'),
-    url(r'^admin/', admin.site.urls),
 ]
