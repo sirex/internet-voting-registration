@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Išankstinis registravimasis</h1>
+
+<h2>Rinkėjo registracija</h2>
+
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p><button type="submit">Registruotis</button></p>
+</form>
+{% endblock %}
