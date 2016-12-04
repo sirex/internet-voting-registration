@@ -58,7 +58,8 @@ def test_validation(app):
         'ballot_id': '2EIWLRVNVN',
         'back': 'https://example.com/vote/',
     })
-    assert resp.location == 'https://example.com/vote/'
+    assert resp.form['ballot_id'].value == '2EIWLRVNVN'
+    assert resp.form['verified'].value == 'true'
 
 
 def test_ballot(app):

@@ -6,8 +6,19 @@
 
 <h2>Rinkėjo patvirtinimas</h2>
 
-<h3>Klaida</h3>
 
-{{ form.errors }}
+<form action="{{ back }}" method="POST">
+  {% if error %}
+    <h3>Klaida</h3>
+    <input type="hidden" name="ballot_id" value="" />
+    <input type="hidden" name="verified" value="false" />
+    {{ error }}
+  {% else %}
+    <p>Autorizavimas sėkmingas.</p>
+    <input type="hidden" name="ballot_id" value="{{ voter.ballot_id }}" />
+    <input type="hidden" name="verified" value="true" />
+    <p><button type="submit">Grįžti</button></p>
+  {% endif %}
+</form>
 
 {% endblock %}

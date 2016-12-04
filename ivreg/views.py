@@ -51,8 +51,10 @@ def validate(request):
     if request.method == "POST":
         form = ValidationForm(request.POST)
         if form.is_valid():
-            # voter = form.cleaned_data['voter']
-            return redirect(form.cleaned_data['back'])
+            return render(request, 'validation.html', {
+                'back': form.cleaned_data['back'],
+                'voter': form.cleaned_data['voter'],
+            })
         else:
             return render(request, 'validation.html', {
                 'form': form,
