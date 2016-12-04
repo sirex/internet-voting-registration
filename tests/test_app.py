@@ -1,4 +1,8 @@
+import json
+
+from unittest import mock
 from ivreg.models import Voter
+from ivreg.services import verify_vote
 
 
 def test_index(app):
@@ -66,6 +70,21 @@ def test_ballot(app):
     Voter.objects.create(
         request_id='SLOCQVAMUNCGNDE6Y5I76HPN3Q',
         ballot_id='2EIWLRVNVN',
-        candidates='{}',
+        candidates='{"Darth Vader": "111", "Yoda": "222", "Luke Skywalker": "333"}',
     )
     app.get('/ballot/SLOCQVAMUNCGNDE6Y5I76HPN3Q/')
+
+
+def test_verify_code(mocker):
+    mocker.patch('requests.get', return_value=mock.Mock(text='\n'.join([
+        json.dumps({
+            'ballot_id': 'FXYJALEVIJ',
+            'vote_hash': 'bf1c7f5dfb58a7ecb3ae71cfadc0fe6aa961f11f7602e284cc8a272e31b90bd1',
+        })
+    ])))
+
+    verify_vote({
+        'ballot_id': 'FXYJALEVIJ',
+        'candidate_id': 'EHXGQ',
+        'vcode': 'ITOE6PBH',
+    })

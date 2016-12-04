@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
 from ivreg.models import Voter
-from ivreg.forms import RegistrationForm, ValidationForm
-from ivreg.services import generate_candidate_codes, generate_ballot_id, generate_request_id
+from ivreg.forms import RegistrationForm, ValidationForm, VerifyForm
+from ivreg.services import generate_candidate_codes, generate_ballot_id, generate_request_id, verify_vote
 
 
 CANDIDATES = [
@@ -70,4 +70,21 @@ def ballot(request, request_id):
     return render(request, 'ballot.html', {
         'ballot': ballot,
         'candidates': [(x, candidates[x]) for x in CANDIDATES],
+    })
+
+
+def verify(request):
+    result = None
+    if request.method == 'POST':
+        form = VerifyForm(request.POST)
+        if form.is_valid():
+            if verify_vote(form.cleaned_data):
+                result = 'Jūsų balsas įskaitytas tinkmai.'
+            else:
+                result = 'Nepavyko rasti jūsų balso.'
+    else:
+        form = VerifyForm()
+    return render(request, 'verify.html', {
+        'form': form,
+        'result': result,
     })

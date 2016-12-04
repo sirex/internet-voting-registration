@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^registration/$', views.registration, name='registration'),
     url(r'^validate/$', views.validate, name='validate'),
     url(r'^ballot/(?P<request_id>[0-9a-zA-Z]+)/$', views.ballot, name='ballot'),
+    url(r'^verify/$', views.verify, name='verify'),
 ]

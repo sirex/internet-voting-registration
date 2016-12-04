@@ -27,3 +27,9 @@ class ValidationForm(forms.Form):
             except Voter.DoesNotExist:
                 raise forms.ValidationError('Given ballot id does not exist.')
         return ballot_id
+
+
+class VerifyForm(forms.Form):
+    ballot_id = forms.CharField(label='Biuletenio nr.')
+    candidate_id = forms.CharField(label='Kandidato kodas')
+    vcode = forms.CharField(label='Patikrinimo kodas')

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>Balso patikrinimas</h1>
+
+<p>Įsitikinkite ar balas buvo įskaitytas taip, kaip balsavote.</p>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <p><button type="submit">Tikrinti</button></p>
+</form>
+{% endblock %}
