@@ -53,8 +53,8 @@ def validate(request):
             return JsonResponse({'errors': 'Only application/json requests are accepted.'})
         form = ValidationForm(data)
         if form.is_valid():
-            voter = form.cleaned_data['voter']
-            return redirect('https://example.com/validate/%s/' % voter.voter_id)
+            # voter = form.cleaned_data['voter']
+            return redirect(form.cleaned_data['back'])
         elif request.content_type == 'application/json':
             return JsonResponse({'errors': form.errors})
     else:
@@ -65,5 +65,5 @@ def ballot(request, request_id):
     ballot = Voter.objects.get(request_id=request_id.upper())
     return render(request, 'ballot.html', {
         'ballot': ballot,
-        'canidates': json.loads(ballot.candidates),
+        'candidates': json.loads(ballot.candidates),
     })

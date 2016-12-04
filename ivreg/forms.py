@@ -11,7 +11,9 @@ class RegistrationForm(forms.ModelForm):
         fields = ['voter_id']
 
 
-class ValidationForm(forms.ModelForm):
+class ValidationForm(forms.Form):
+    ballot_id = forms.CharField(min_length=1, max_length=10)
+    back = forms.URLField()
 
     class Meta:
         model = Voter
