@@ -11,4 +11,13 @@
   {{ form.as_p }}
   <p><button type="submit">Tikrinti</button></p>
 </form>
+
+{% if result %}
+<hr>
+
+<h2>Patikrinimo rezultatas</h2>
+
+<p>{{ result }}</p>
+  
+{% endif %}
 {% endblock %}
