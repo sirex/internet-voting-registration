@@ -14,9 +14,9 @@ def test_registration(app):
 
 
 def test_registration_callback(mocker, app):
-    mocker.patch('ivreg.views.generate_ballot_id', return_value='2EIWLRVNVNCXFHQDOLXQGIHHAI')
+    mocker.patch('ivreg.views.generate_request_id', return_value='SLOCQVAMUNCGNDE6Y5I76HPN3Q')
     resp = app.post_json('/registration/', {'voter_id': '123'})
-    assert resp.json == {'redirect': 'http://localhost:80/ballot/2EIWLRVNVNCXFHQDOLXQGIHHAI/'}
+    assert resp.json == {'redirect': 'http://localhost:80/ballot/SLOCQVAMUNCGNDE6Y5I76HPN3Q/'}
 
 
 def test_validation_error(app):
@@ -31,11 +31,20 @@ def test_validation_error(app):
 
 
 def test_validation(app):
-    Voter.objects.create(voter_id='123', ballot_id='2EIWLRVNVNCXFHQDOLXQGIHHAI', candidates='{}')
+    Voter.objects.create(
+        voter_id='123',
+        request_id='SLOCQVAMUNCGNDE6Y5I76HPN3Q',
+        ballot_id='2EIWLRVNVNCXFHQDOLXQGIHHAI',
+        candidates='{}',
+    )
     resp = app.post_json('/validate/', {'ballot_id': '2EIWLRVNVNCXFHQDOLXQGIHHAI'})
     assert resp.location == 'https://example.com/validate/123/'
 
 
 def test_ballot(app):
-    Voter.objects.create(ballot_id='2EIWLRVNVNCXFHQDOLXQGIHHAI', candidates='{}')
-    app.get('/ballot/2EIWLRVNVNCXFHQDOLXQGIHHAI/')
+    Voter.objects.create(
+        request_id='SLOCQVAMUNCGNDE6Y5I76HPN3Q',
+        ballot_id='2EIWLRVNVNCXFHQDOLXQGIHHAI',
+        candidates='{}',
+    )
+    app.get('/ballot/SLOCQVAMUNCGNDE6Y5I76HPN3Q/')

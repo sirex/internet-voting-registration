@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 
 from ivreg.models import Voter
 from ivreg.forms import RegistrationForm, ValidationForm
-from ivreg.services import generate_candidate_codes, generate_ballot_id
+from ivreg.services import generate_candidate_codes, generate_ballot_id, generate_request_id
 
 
 CANDIDATES = [
@@ -28,6 +28,7 @@ def registration(request):
         form = RegistrationForm(data)
         if form.is_valid():
             voter = Voter.objects.create(
+                request_id=generate_request_id(),
                 voter_id=form.cleaned_data['voter_id'],
                 ballot_id=generate_ballot_id(),
                 candidates=json.dumps(generate_candidate_codes(CANDIDATES))
@@ -60,8 +61,8 @@ def validate(request):
         return JsonResponse({'errors': 'Only POST method allowed.'})
 
 
-def ballot(request, ballot_id):
-    ballot = Voter.objects.get(ballot_id=ballot_id.upper())
+def ballot(request, request_id):
+    ballot = Voter.objects.get(request_id=request_id.upper())
     return render(request, 'ballot.html', {
         'ballot': ballot,
         'canidates': json.loads(ballot.candidates),

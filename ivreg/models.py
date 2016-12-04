@@ -3,6 +3,9 @@ from django.urls import reverse
 
 
 class Voter(models.Model):
+    # And id to associate received voter id with redirect from CEC server
+    request_id = models.CharField(max_length=36)
+
     # Voter id (uuid4) comes from CEC server, idetifies real user.
     voter_id = models.CharField(max_length=36, verbose_name="Autorizacijos numeris")
 
@@ -13,4 +16,4 @@ class Voter(models.Model):
     candidates = models.TextField()
 
     def get_absolute_url(self):
-        return reverse('ballot', args=[self.ballot_id])
+        return reverse('ballot', args=[self.request_id])
