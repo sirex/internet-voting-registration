@@ -2,6 +2,7 @@ import json
 
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from ivreg.models import Voter
 from ivreg.forms import RegistrationForm, ValidationForm
@@ -45,6 +46,7 @@ def registration(request):
     })
 
 
+@csrf_exempt
 def validate(request):
     if request.method == "POST":
         form = ValidationForm(request.POST)
