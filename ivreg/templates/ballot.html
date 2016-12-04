@@ -4,7 +4,15 @@
 {% block content %}
 <h1>Išankstinis registravimasis</h1>
 
-<p>{{ballot.voter_id}}</p>
-<p>{{ballot.ballot_id}}</p>
-<p>{{candidates}}</p>
+<p>Biuletenio numeris: <strong>{{ballot.ballot_id}}</strong></p>
+<table>
+  <tbody>
+    {% for candidate, code in candidates %}
+    <tr>
+      <td>{{ candidate }}:</td>
+      <td><strong style="font-family: monospace;font-size: 130%;">{{ code }}</strong></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock %}

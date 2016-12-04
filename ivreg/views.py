@@ -10,9 +10,9 @@ from ivreg.services import generate_candidate_codes, generate_ballot_id, generat
 
 
 CANDIDATES = [
-    'Candidate 1',
-    'Candidate 2',
-    'Candidate 3',
+    'Darth Vader',
+    'Yoda',
+    'Luke Skywalker',
 ]
 
 
@@ -66,7 +66,8 @@ def validate(request):
 
 def ballot(request, request_id):
     ballot = Voter.objects.get(request_id=request_id.upper())
+    candidates = json.loads(ballot.candidates)
     return render(request, 'ballot.html', {
         'ballot': ballot,
-        'candidates': json.loads(ballot.candidates),
+        'candidates': [(x, candidates[x]) for x in CANDIDATES],
     })
