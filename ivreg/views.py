@@ -20,6 +20,7 @@ def index(request):
     return render(request, 'index.html')
 
 
+@csrf_exempt
 def registration(request):
     if request.method == "POST":
         if request.content_type == 'application/json':
