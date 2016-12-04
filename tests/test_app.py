@@ -39,17 +39,12 @@ def test_registration_callback(mocker, app):
 
 
 def test_validation_error(app):
-    resp = app.get('/validate/')
-    assert resp.json == {'errors': 'Only POST method allowed.'}
-
+    resp = app.get('/validate/', status=404)
     resp = app.post('/validate/', {'ballot_id': '123'})
-    assert resp.json == {'errors': 'Only application/json requests are accepted.'}
-
-    resp = app.post_json('/validate/', {'ballot_id': '123'})
-    assert resp.json == {'errors': {
+    assert resp.context['form'].errors == {
         'ballot_id': ['Given ballot id does not exist.'],
         'back': ['This field is required.'],
-    }}
+    }
 
 
 def test_validation(app):
@@ -59,7 +54,7 @@ def test_validation(app):
         ballot_id='2EIWLRVNVN',
         candidates='{}',
     )
-    resp = app.post_json('/validate/', {
+    resp = app.post('/validate/', {
         'ballot_id': '2EIWLRVNVN',
         'back': 'https://example.com/vote/',
     })

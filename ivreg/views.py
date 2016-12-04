@@ -1,6 +1,6 @@
 import json
 
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect
 
 from ivreg.models import Voter
@@ -47,18 +47,16 @@ def registration(request):
 
 def validate(request):
     if request.method == "POST":
-        if request.content_type == 'application/json':
-            data = json.loads(request.body.decode('utf-8'))
-        else:
-            return JsonResponse({'errors': 'Only application/json requests are accepted.'})
-        form = ValidationForm(data)
+        form = ValidationForm(request.POST)
         if form.is_valid():
             # voter = form.cleaned_data['voter']
             return redirect(form.cleaned_data['back'])
-        elif request.content_type == 'application/json':
-            return JsonResponse({'errors': form.errors})
+        else:
+            return render(request, 'validation.html', {
+                'form': form,
+            })
     else:
-        return JsonResponse({'errors': 'Only POST method allowed.'})
+        raise Http404
 
 
 def ballot(request, request_id):
