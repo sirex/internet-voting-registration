@@ -34,17 +34,17 @@ def test_validation(app):
     Voter.objects.create(
         voter_id='123',
         request_id='SLOCQVAMUNCGNDE6Y5I76HPN3Q',
-        ballot_id='2EIWLRVNVNCXFHQDOLXQGIHHAI',
+        ballot_id='2EIWLRVNVN',
         candidates='{}',
     )
-    resp = app.post_json('/validate/', {'ballot_id': '2EIWLRVNVNCXFHQDOLXQGIHHAI'})
+    resp = app.post_json('/validate/', {'ballot_id': '2EIWLRVNVN'})
     assert resp.location == 'https://example.com/validate/123/'
 
 
 def test_ballot(app):
     Voter.objects.create(
         request_id='SLOCQVAMUNCGNDE6Y5I76HPN3Q',
-        ballot_id='2EIWLRVNVNCXFHQDOLXQGIHHAI',
+        ballot_id='2EIWLRVNVN',
         candidates='{}',
     )
     app.get('/ballot/SLOCQVAMUNCGNDE6Y5I76HPN3Q/')

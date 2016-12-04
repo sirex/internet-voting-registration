@@ -12,4 +12,4 @@ def generate_candidate_codes(candidates):
 
 
 def generate_ballot_id():
-    return base64.b32encode(uuid.uuid4().bytes).decode('ascii').rstrip('=')
+    return base64.b32encode(uuid.uuid4().bytes).decode('ascii')[:10]
